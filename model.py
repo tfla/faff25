@@ -7,7 +7,8 @@ A simple single-layer climate model.
 __author__ = "Timmy Larsson, Linus Lexfors, Hans Bjerndell"
 __license__ = "GPLv2"
 
-import argparse
+import argparse, numpy
+import matplotlib.pyplot as plt
 
 def Tj():
     return (args.fs*(1-args.a)/(4*args.sigma*(1-(args.f/2))))**(1/4)
@@ -19,7 +20,19 @@ def main():
     """
     global args 
     args = parse_args()
-    print("%d" % (Tj()))
+    print("Average temp for earth is %d K" % (Tj()))
+    plotrange()
+
+def plotrange():
+    results=[]
+    for i in numpy.arange(0, 1, 0.01):
+        args.a = i
+        results.append(Tj())
+    x = numpy.arange(0, 1, 0.01)
+    plt.ylabel('Tj (K)')
+    plt.xlabel('Albedo')
+    plt.plot(x, results)
+    plt.show()
 
 def parse_args():
     parser = argparse.ArgumentParser(description='A single-layer climate model.')
