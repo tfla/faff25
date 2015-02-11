@@ -7,7 +7,7 @@ A simple single-layer climate model.
 __author__ = "Timmy Larsson, Linus Lexfors, Hans Bjerndell"
 __license__ = "GPLv2"
 
-import argparse, numpy
+import argparse, numpy, iostring
 import matplotlib.pyplot as plt
 
 def Tj():
