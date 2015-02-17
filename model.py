@@ -21,7 +21,7 @@ def main():
     global args 
     args = parse_args()
     #print("Average temp for earth is %d K" % (Tj()))
-    plotrange()
+    plotrange2()
 
 def plotrange():
     results=[]
@@ -29,10 +29,23 @@ def plotrange():
     for i in x:
         args.a = i
         temp = Tj()
-        #print("Temp with a = ", i, " is ", temp)
+        print("Temp with a = ", i, " is ", temp)
         results.append(temp)
     plt.ylabel('Tj (K)')
     plt.xlabel('Albedo')
+    plt.plot(x, results)
+    plt.show()
+
+def plotrange2():
+    results=[]
+    x = numpy.arange(0, 2.0, 0.01)
+    for i in x:
+        args.f = i
+        temp = Tj()
+        print("Temp with f = ", i, " is ", temp)
+        results.append(temp)
+    plt.ylabel('Tj (K)')
+    plt.xlabel('f')
     plt.plot(x, results)
     plt.show()
 
