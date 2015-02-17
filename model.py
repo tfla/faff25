@@ -9,6 +9,9 @@ __license__ = "GPLv2"
 
 import argparse, numpy
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 def Tj():
     return (args.fs*(1-args.a)/(4*args.sigma*(1-(args.f/2))))**(1/4)
@@ -21,7 +24,7 @@ def main():
     global args 
     args = parse_args()
     #print("Average temp for earth is %d K" % (Tj()))
-    plotrange2()
+    plotrange3d()
 
 def plotrange():
     results=[]
@@ -38,7 +41,7 @@ def plotrange():
 
 def plotrange2():
     results=[]
-    x = numpy.arange(0, 2.0, 0.01)
+    x = numpy.arange(0, 1.01, 0.01)
     for i in x:
         args.f = i
         temp = Tj()
@@ -47,6 +50,38 @@ def plotrange2():
     plt.ylabel('Tj (K)')
     plt.xlabel('f')
     plt.plot(x, results)
+    plt.show()
+
+def plotrange3d():
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    results=[]
+    X=[]
+    Y=[]
+    x = numpy.arange(0, 1.01, 0.01)
+    for i in x:
+        args.a = i
+        y = numpy.arange(0, 1.01, 0.01)
+        for j in y:
+            args.f = j
+            temp = Tj()
+            print("Temp with f = ", j, " and a = ", i, " is ", temp)
+            results.append(temp)
+            X.append(i)
+            Y.append(j);
+    
+    print(len(X))
+    print(len(Y))
+    print(len(results))
+    surf = ax.plot_surface(X, Y, results, rstride=1, cstride=1, cmap=cm.coolwarm,
+            linewidth=0, antialiased=False)
+    ax.set_zlim(-1.01, 1.01)
+
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+
     plt.show()
 
 def parse_args():
